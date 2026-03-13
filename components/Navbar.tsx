@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { User } from "@supabase/supabase-js";
+import LoginModal from "./LoginModal";
 
 export default function Navbar() {
   const [user, setUser] = useState<User | null>(null);
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const supabase = createClient();
 
   useEffect(() => {
@@ -61,12 +63,12 @@ export default function Navbar() {
             </Link>
           ) : (
             <>
-              <Link 
-                href="/login"
+              <button 
+                onClick={() => setIsLoginModalOpen(true)}
                 className="hidden sm:flex items-center justify-center rounded-lg h-10 px-5 text-slate-700 dark:text-slate-200 text-sm font-bold border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all font-sans"
               >
                 Sign In
-              </Link>
+              </button>
             <Link 
                 href="/contact"
                 className="flex items-center justify-center rounded-lg h-10 px-5 bg-primary text-white text-sm font-bold shadow-lg shadow-primary/20 hover:bg-primary/90 transition-all font-sans"
@@ -77,6 +79,7 @@ export default function Navbar() {
           )}
         </div>
       </div>
+      <LoginModal isOpen={isLoginModalOpen} onClose={() => setIsLoginModalOpen(false)} />
     </header>
   );
 }
